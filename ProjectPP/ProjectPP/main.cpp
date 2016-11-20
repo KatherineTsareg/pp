@@ -2,10 +2,22 @@
 //
 
 #include "stdafx.h"
-#include "Matrix.h"
+#include "LinearlMatrix.h"
 #include <ctime>
 
 using namespace std;
+
+void PrintMatrix(const vector<vector<double>> & matrix)
+{
+	for (size_t i = 0; i < matrix.size(); i++)
+	{
+		for (size_t j = 0; j < matrix[0].size(); j++)
+		{
+			cout << matrix[i][j] << " ";
+		}
+		cout << endl;
+	}
+}
 
 vector<vector<double>> GenerateRandomMatrix(const int width, const int height)
 {
@@ -16,7 +28,8 @@ vector<vector<double>> GenerateRandomMatrix(const int width, const int height)
 		matrix[i].resize(width);
 		for (size_t j = 0; j < width; j++)
 		{
-			matrix[i][j] = (rand() % 200) - 100;
+			matrix[i][j] = (rand() % 20) - 10;
+			matrix[i][j] /= 5;
 		}
 	}
 	return matrix;
@@ -24,9 +37,16 @@ vector<vector<double>> GenerateRandomMatrix(const int width, const int height)
 
 int main()
 {
-	int n = 10;
+	int n = 100;
 	srand(time(0));
-	CMatrix matrix(GenerateRandomMatrix(n, n));
-	CMatrix::Print(matrix.GetAdditionsMatrix());
+	CLinearlMatrix matrix(GenerateRandomMatrix(n, n));
+	/*std::vector<std::vector<double>> matrix1 = {
+		{1, 2, 4, 5},
+		{0, 5, 6, 8},
+		{0, 0, 1, 4},
+		{0, 0, 0, 2},
+	};
+	CLinearlMatrix matrix(matrix1);*/
+	PrintMatrix(matrix.GetAdditionsMatrix());
 	return 0;
 }

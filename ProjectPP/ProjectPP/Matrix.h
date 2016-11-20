@@ -2,24 +2,23 @@
 #include <vector>
 
 
-class CMatrix
+class IMatrix
 {
 public:
-	CMatrix(std::vector<std::vector<double>> & inputMatrix);
+	IMatrix(std::vector<std::vector<double>> & inputMatrix);
 	std::vector<std::vector<double>> GetMatrix();
 	double GetDeterminant() const;
-	std::vector<std::vector<double>> GetAdditionsMatrix();
+	virtual std::vector<std::vector<double>> GetAdditionsMatrix() = 0;
 
-	static void Print(std::vector<std::vector<double>> matrix);
 	void Print();
-	~CMatrix();
-private:
-	std::vector<std::vector<double>> m_matrix;
+	~IMatrix();
+protected:
 	size_t m_width;
 	size_t m_height;
 	double m_determinant = 1;
-	
-	double GetMinorItem(size_t i, size_t j);
+	std::vector<std::vector<double>> m_matrix;
+
 	void CalculateDeterminant();
+	virtual double GetMinorItem(size_t i, size_t j) = 0;
 };
 

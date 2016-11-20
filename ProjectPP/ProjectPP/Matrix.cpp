@@ -5,7 +5,7 @@
 using namespace std;
 
 
-CMatrix::CMatrix(vector<vector<double>> & inputMatrix)
+IMatrix::IMatrix(vector<vector<double>> & inputMatrix)
 	:m_matrix(inputMatrix)
 {
 	m_height = inputMatrix.size();
@@ -13,17 +13,17 @@ CMatrix::CMatrix(vector<vector<double>> & inputMatrix)
 	CalculateDeterminant();
 }
 
-std::vector<std::vector<double>> CMatrix::GetMatrix()
+std::vector<std::vector<double>> IMatrix::GetMatrix()
 {
 	return m_matrix;
 }
 
-double CMatrix::GetDeterminant() const
+double IMatrix::GetDeterminant() const
 {
 	return m_determinant;
 }
 
-std::vector<std::vector<double>> CMatrix::GetAdditionsMatrix()
+/*std::vector<std::vector<double>> CMatrix::GetAdditionsMatrix()
 {
 	auto additionMatrix = m_matrix;
 	for (size_t i = 0; i < m_height; i++)
@@ -34,10 +34,10 @@ std::vector<std::vector<double>> CMatrix::GetAdditionsMatrix()
 		}
 	}
 	return additionMatrix;
-}
+}*/
 
 
-CMatrix::~CMatrix()
+IMatrix::~IMatrix()
 {
 }
 
@@ -60,7 +60,7 @@ bool SwapRows(vector<vector<double>> & matrix, size_t index, bool & positive)
 	return true;
 }
 
-double CMatrix::GetMinorItem(size_t row, size_t column)
+/*double IMatrix::GetMinorItem(size_t row, size_t column)
 {
 	vector<vector<double>> newMatrix;
 	newMatrix.resize(m_height - 1);
@@ -74,13 +74,11 @@ double CMatrix::GetMinorItem(size_t row, size_t column)
 			newMatrix[i][j] = m_matrix[x][y];
 		}
 	}
-
-	
-	CMatrix shortMatrix(newMatrix);
+	IMatrix shortMatrix(newMatrix);
 	return shortMatrix.GetDeterminant();
-}
+}*/
 
-void CMatrix::CalculateDeterminant()
+void IMatrix::CalculateDeterminant()
 {
 	auto tempMatrix = m_matrix;
 	bool isPositive = true;
@@ -111,18 +109,13 @@ void CMatrix::CalculateDeterminant()
 	m_determinant *= (isPositive ? 1 : -1);
 }
 
-void CMatrix::Print()
+void IMatrix::Print()
 {
-	Print(m_matrix);
-}
-
-void CMatrix::Print(vector<vector<double>> matrix)
-{
-	for (size_t i = 0; i < matrix.size(); i++)
+	for (size_t i = 0; i < m_matrix.size(); i++)
 	{
-		for (size_t j = 0; j < matrix[0].size(); j++)
+		for (size_t j = 0; j < m_matrix[0].size(); j++)
 		{
-			cout << matrix[i][j] << " ";
+			cout << m_matrix[i][j] << " ";
 		}
 		cout << endl;
 	}
