@@ -13,4 +13,5 @@
 
 #include <iostream>
 #include <vector>
+#include <chrono>
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

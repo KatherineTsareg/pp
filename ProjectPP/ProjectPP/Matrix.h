@@ -19,6 +19,5 @@ protected:
 	std::vector<std::vector<double>> m_matrix;
 
 	void CalculateDeterminant();
-	virtual double GetMinorItem(size_t i, size_t j) = 0;
 };
 
