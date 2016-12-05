@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ThreadMatrix.h"
+#include "CalculateAdditionalMatrixWithThreads.h"
 
 using namespace std;
 
@@ -16,20 +16,20 @@ struct SParams
 		width = inputMatrix.size();
 		height = inputMatrix[0].size();
 	}
-	
 };
 
-CThreadMatrix::CThreadMatrix(std::vector<std::vector<double>> & inputMatrix) : IMatrix(inputMatrix)
+CCalculateAdditionalMatrixWithThreads::CCalculateAdditionalMatrixWithThreads(std::vector<std::vector<double>> & inputMatrix) : IMatrix(inputMatrix)
 {
 }
 
 
-CThreadMatrix::~CThreadMatrix()
+CCalculateAdditionalMatrixWithThreads::~CCalculateAdditionalMatrixWithThreads()
 {
 }
 
-std::vector<std::vector<double>> CThreadMatrix::GetAdditionsMatrix()
+std::vector<std::vector<double>> CCalculateAdditionalMatrixWithThreads::GetAdditionsMatrix()
 {
+	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
 	HANDLE * threads = new HANDLE[m_threadCount];
 	auto additionMatrix = m_matrix;
 	size_t count = 0;
@@ -53,31 +53,24 @@ std::vector<std::vector<double>> CThreadMatrix::GetAdditionsMatrix()
 		}
 	}
 	delete[] threads;
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	std::cout << "Time with thread: "
+		<< std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
+		<< " secs" << endl;
 	return additionMatrix;
 }
 
-void CThreadMatrix::SetThreadCount(size_t threadsCount)
+void CCalculateAdditionalMatrixWithThreads::SetThreadCount(size_t threadsCount)
 {
 	m_threadCount = threadsCount;
 }
 
-DWORD WINAPI CThreadMatrix::CalculateMinorItem(LPVOID param)
+DWORD WINAPI CCalculateAdditionalMatrixWithThreads::CalculateMinorItem(LPVOID param)
 {
 	SParams * params = (SParams*)param;
 	
-	vector<vector<double>> newMatrix;
-	newMatrix.resize(params->height - 1);
-	for (size_t i = 0, x = 0; i < params->height - 1; i++, x++)
-	{
-		newMatrix[i].resize(params->width - 1);
-		x = (x == params->row ? x + 1 : x);
-		for (size_t j = 0, y = 0; j < params->width - 1; j++, y++)
-		{
-			y = (y == params->column ? y + 1 : y);
-			newMatrix[i][j] = params->matrix[x][y];
-		}
-	}
-	CThreadMatrix shortMatrix(newMatrix);
+	auto submatrix = GetSubmatrix(&(params->matrix), params->row, params->column);
+	CCalculateAdditionalMatrixWithThreads shortMatrix(submatrix);
 	params->additionMatrix[params->row][params->column] = pow(-1, params->row + params->column) * shortMatrix.GetDeterminant();
 	return 0;
 }

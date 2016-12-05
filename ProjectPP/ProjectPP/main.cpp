@@ -2,9 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "LinearlMatrix.h"
-#include "ThreadMatrix.h"
-#include <ctime>
+#include "CalculateAdditionalMatrixWithoutThreads.h"
+#include "CalculateAdditionalMatrixWithThreads.h"
 
 using namespace std;
 
@@ -38,33 +37,17 @@ vector<vector<double>> GenerateRandomMatrix(const int width, const int height)
 
 int main()
 {
-	int n = 1000;
+	int n = 100;
 	srand(time(0));
 	auto vecvec = GenerateRandomMatrix(n, n);
 	
 	
-	CLinearlMatrix matrix(vecvec);
-	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	auto results = matrix.GetAdditionsMatrix();
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	std::cout << "Printing took "
-		<< std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-		<< " secs" << endl;
-
-	//CLinearlMatrix matrix(vecvec);
-	//PrintMatrix(matrix.GetAdditionsMatrix());
+	CCalculateAdditionalMatrixWithoutThreads matrix(vecvec);
+	matrix.GetAdditionsMatrix();
 	
-	/*CThreadMatrix threadMatrix(vecvec);
+	CCalculateAdditionalMatrixWithThreads threadMatrix(vecvec);
 	threadMatrix.SetThreadCount(7);
-	std::chrono::steady_clock::time_point start = std::chrono::steady_clock::now();
-	auto results = threadMatrix.GetAdditionsMatrix();
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	std::cout << "Printing took "
-		<< std::chrono::duration_cast<std::chrono::seconds>(end - start).count()
-		<< " secs" << endl;*/
-	
-	
-	//PrintMatrix(results);
+	threadMatrix.GetAdditionsMatrix();
 	
 	return 0;
 }

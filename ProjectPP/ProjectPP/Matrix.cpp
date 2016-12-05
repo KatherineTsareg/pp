@@ -23,19 +23,24 @@ double IMatrix::GetDeterminant() const
 	return m_determinant;
 }
 
-/*std::vector<std::vector<double>> CMatrix::GetAdditionsMatrix()
+std::vector<std::vector<double>> IMatrix::GetSubmatrix(std::vector<std::vector<double>> * matrix, size_t row, size_t column)
 {
-	auto additionMatrix = m_matrix;
-	for (size_t i = 0; i < m_height; i++)
+	size_t height = matrix->size();
+	size_t width = (*matrix)[0].size();
+	vector<vector<double>> newMatrix;
+	newMatrix.resize(height - 1);
+	for (size_t i = 0, x = 0; i < height - 1; i++, x++)
 	{
-		for (size_t j = 0; j < m_width; j++)
+		newMatrix[i].resize(width - 1);
+		x = (x == row ? x + 1 : x);
+		for (size_t j = 0, y = 0; j < width - 1; j++, y++)
 		{
-			additionMatrix[i][j] = pow(-1, i + j) * GetMinorItem(i, j);
+			y = (y == column ? y + 1 : y);
+			newMatrix[i][j] = (*matrix)[x][y];
 		}
 	}
-	return additionMatrix;
-}*/
-
+	return newMatrix;
+}
 
 IMatrix::~IMatrix()
 {
@@ -60,23 +65,6 @@ bool SwapRows(vector<vector<double>> & matrix, size_t index, bool & positive)
 	return true;
 }
 
-/*double IMatrix::GetMinorItem(size_t row, size_t column)
-{
-	vector<vector<double>> newMatrix;
-	newMatrix.resize(m_height - 1);
-	for (size_t i = 0, x = 0; i < m_height - 1; i++, x++)
-	{
-		newMatrix[i].resize(m_width - 1);
-		x = (x == row ? x + 1 : x);
-		for (size_t j = 0, y = 0; j < m_width - 1; j++, y++)
-		{
-			y = (y == column ? y + 1 : y);
-			newMatrix[i][j] = m_matrix[x][y];
-		}
-	}
-	IMatrix shortMatrix(newMatrix);
-	return shortMatrix.GetDeterminant();
-}*/
 
 void IMatrix::CalculateDeterminant()
 {

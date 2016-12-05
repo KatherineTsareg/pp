@@ -8,6 +8,7 @@ public:
 	IMatrix(std::vector<std::vector<double>> & inputMatrix);
 	std::vector<std::vector<double>> GetMatrix();
 	double GetDeterminant() const;
+	static std::vector<std::vector<double>> GetSubmatrix(std::vector<std::vector<double>> * matrix, size_t row, size_t column);
 	virtual std::vector<std::vector<double>> GetAdditionsMatrix() = 0;
 
 	void Print();
